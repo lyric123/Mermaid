@@ -1,0 +1,27 @@
+flowchart TB
+    subgraph User [ユーザー]
+        U1([06:00 業務開始])
+        U2{延長必要?}
+        U3[16:00 延長依頼締切]
+    end
+
+    subgraph Operator [運用担当者]
+        O1[延長依頼の確認]
+        O2[18:00 ジョブ制御]
+    end
+
+    subgraph System [システム]
+        S1[06:00 オンライン開局]
+        S2[18:00 更新抑止/参照のみ]
+        S3[19:30 閉局/強制切断]
+    end
+
+    S1 --> U1
+    U1 --> U2
+    U2 -- Yes --> U3
+    U3 --> O1
+    O1 --> O2
+    O2 --> S2
+    U2 -- No --> S2
+    S2 --> S3
+    
